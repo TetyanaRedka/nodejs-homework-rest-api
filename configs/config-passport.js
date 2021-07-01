@@ -13,9 +13,12 @@ const settings = {
 };
 
 passport.use(
-  new Strategy(settings, async (payload, done) => {
-    try {
-      const user = await service.getById(payload.id);
+    new Strategy(settings, async (req, payload, done) => {
+  // new Strategy(settings, async (payload, done) => {
+      try {
+      const [, token] = reg["Authorization"].split(' ')
+        // const user = await service.getById(payload.id);
+        const user = await service.getOne({_id: payload.id, token });
       if (!user || !user.token) {
         throw new Error("User not found");
       }

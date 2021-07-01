@@ -1,10 +1,11 @@
-const Contact = require("../models/contact");
+const { contacts: service } = require("../../services");
 
 const del = async (req, res, next) => {
   const { contactId } = req.params;
 
   try {
-    const contact = await Contact.findByIdAndDelete(contactId);
+    const filter = { _id: contactId, owner: req.user._id };
+    const contact = await service.del(filter);
 
     if (!contact) {
       return res.status(404).json({

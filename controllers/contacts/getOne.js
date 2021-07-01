@@ -1,10 +1,12 @@
-const Contact = require("../models/contact");
+const { contacts: service } = require("../../services");
 
 const getOne = async (req, res, next) => {
-  const { contactId } = req.params;
+  const { id } = req.params;
 
   try {
-    const contact = await Contact.findById(contactId);
+    const filter = { _id: id, owner: req.user._id };
+    const contact = await service.getOne(filter);
+
     if (!contact) {
       return res.status(404).json({
         status: "error",

@@ -1,10 +1,17 @@
-const Contact = require("../models/contact");
+const { contacts: service } = require("../../services");
 
 const update = async (req, res, next) => {
   const { contactId } = req.params;
+  const { body, user } = req;
 
   try {
-    const contact = await Contact.findByIdAndUpdate(contactId, req.body);
+    const newContact = {
+      name: body.name,
+      number: body.number,
+      owner: user._id,
+    };
+
+    const contact = await service.update(contactId, newContact);
 
     if (!contact) {
       return res.status(404).json({

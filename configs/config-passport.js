@@ -16,7 +16,7 @@ passport.use(
     new Strategy(settings, async (req, payload, done) => {
   // new Strategy(settings, async (payload, done) => {
       try {
-      const [, token] = reg["Authorization"].split(' ')
+      const [, token] = req["Authorization"].split(' ')
         // const user = await service.getById(payload.id);
         const user = await service.getOne({_id: payload.id, token });
       if (!user || !user.token) {

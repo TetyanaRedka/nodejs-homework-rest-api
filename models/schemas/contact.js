@@ -1,4 +1,4 @@
-const { Schema } = require("mongoose");
+const { Schema, ObjectId } = require("mongoose");
 
 const contactSchema = Schema({
   name: {
@@ -30,6 +30,10 @@ const contactSchema = Schema({
     enum: ["false", "true"],
     default: "true",
     required: [true, "name must be exist!"],
+  },
+  owner: {
+    type: ObjectId,
+    ref: "user",
   },
 });
 

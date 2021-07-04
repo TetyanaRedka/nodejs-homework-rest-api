@@ -12,8 +12,7 @@ const register = async (req, res, next) => {
       });
     }
 
-    const data = await service.add({ email, password });
-
+    await service.add({ email, password });
     res.status(201).json({
       status: "success",
       code: 201,

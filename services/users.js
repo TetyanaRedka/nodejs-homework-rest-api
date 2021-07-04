@@ -1,7 +1,7 @@
-const User = require("../models");
+const { User } = require("../models");
 
 const getOne = (filter) => {
-  return User.fineOne(filter);
+  return User.findOne(filter);
 };
 
 const getById = (id) => {
@@ -14,8 +14,17 @@ const add = ({ email, password }) => {
   return newUser.save();
 };
 
-const update = (id, data) => {
-  User.findByIdAndUpdate(id, data);
+const update = async (id, data) => {
+  await User.updateOne({ _id: id }, { token: data });
+};
+
+const updateAwatar = async (id, fileName) => {
+  await User.updateOne({ _id: id }, { avatarURL: fileName });
+};
+
+const getAwatar = async (id) => {
+  const { avatarURL } = await User.findOne({ _id: id });
+  return avatarURL;
 };
 
 module.exports = {
@@ -23,4 +32,6 @@ module.exports = {
   getById,
   add,
   update,
+  updateAwatar,
+  getAwatar,
 };

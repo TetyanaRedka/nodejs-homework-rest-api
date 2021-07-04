@@ -22,7 +22,7 @@ const login = async (req, res, next) => {
 
     const { TOKEN_KEY } = process.env;
     const token = jwt.sign(payload, TOKEN_KEY);
-    await service.update(user._id, { ...user, token });
+    await service.update(user._id, token);
 
     res.json({
       status: "success",

@@ -1,4 +1,6 @@
 const { User } = require("../models");
+const { nanoid } = require("nanoid");
+const SendMail = require("./email");
 
 const getOne = (filter) => {
   return User.findOne(filter);
@@ -8,9 +10,11 @@ const getById = (id) => {
   return User.findById(id);
 };
 
-const add = ({ email, password }) => {
-  const newUser = new User({ email });
+const add = async ({ email, password }) => {
+  const verifyToken = nanoid();
+  const newUser = new User({ email, verifyToken });
   newUser.setPassword(password);
+  await SendMail(verifyToken, email);
   return newUser.save();
 };
 
@@ -27,6 +31,17 @@ const getAwatar = async (id) => {
   return avatarURL;
 };
 
+const verify = async ({ verificationToken }) => {
+  const user = await User.findOne({ verifyToken: verificationToken });
+
+  if (user) {
+    await User.updateOne({ verify: true }, { verifyToken: null });
+
+    return true;
+  }
+  return false;
+};
+
 module.exports = {
   getOne,
   getById,
@@ -34,4 +49,5 @@ module.exports = {
   update,
   updateAwatar,
   getAwatar,
+  verify,
 };

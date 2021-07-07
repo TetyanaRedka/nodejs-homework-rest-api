@@ -17,4 +17,8 @@ router.get("/current", useAuth, ctrl.current);
 
 router.patch("/avatars", useAuth, upload.single("avatar"), avatar);
 
+router.get("/verify/:verificationToken", ctrl.verify);
+
+router.post("/verify", express.json(), ctrl.secondaryEmail);
+
 module.exports = router;

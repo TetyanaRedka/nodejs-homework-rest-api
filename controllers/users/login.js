@@ -8,7 +8,7 @@ const login = async (req, res, next) => {
 
   try {
     const user = await service.getOne({ email });
-    if (!user || !user.validPassword(password)) {
+    if (!user || !user.validPassword(password) || !user.verify) {
       return res.status(401).json({
         status: "error",
         code: 401,
